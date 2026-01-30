@@ -1,6 +1,5 @@
-/build
+build/
 /install
-/android/app/build
 /android/app/.cxx
 .cache
 .gradle
