@@ -1,7 +1,5 @@
 CompileFlags:
   Add: 
-    - "-Wall"
-    - "-Wextra"
     - "--target=x86_64-pc-windows-msvc"
     - "--driver-mode=cl"
     - "-fms-extensions"
