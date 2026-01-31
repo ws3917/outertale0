@@ -1,0 +1,10 @@
+CompileFlags:
+  Add: 
+    - "-Wall"
+    - "-Wextra"
+    - "--target=x86_64-pc-windows-msvc"
+    - "--driver-mode=cl"
+    - "-fms-extensions"
+    - "-D_CRT_SECURE_NO_WARNINGS"
+
+  CompilationDatabase: "build/windows-debug"

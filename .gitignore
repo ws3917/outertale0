@@ -1,7 +1,8 @@
 build/
-/install
+/install/
 /android/app/.cxx
 .cache
 .gradle
 local.properties
 compile_commands.json
+/.clangd
