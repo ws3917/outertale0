@@ -4,3 +4,4 @@ build/
 .cache
 .gradle
 local.properties
+compile_commands.json
