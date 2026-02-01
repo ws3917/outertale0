@@ -40,6 +40,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     SDL3_mixer::SDL3_mixer-shared
 )
 
+# 编译后配置
 if(WIN32)
     # Release 模式下隐藏控制台窗口
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -55,9 +56,27 @@ if(WIN32)
     )
 endif()
 
+# 复制资源文件
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
     ${CMAKE_SOURCE_DIR}/assets/
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
     COMMAND_EXPAND_LISTS
 )
+
+# 安装
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION .
+)
+
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/assets/"
+    DESTINATION .
+)
+
+if(WIN32)
+    install(IMPORTED_RUNTIME_ARTIFACTS
+        SDL3::SDL3-shared
+        SDL3_mixer::SDL3_mixer-shared
+        RUNTIME DESTINATION .
+    )
+endif()
