@@ -1,6 +1,6 @@
 # 初始设置
 cmake_minimum_required(VERSION 3.21)
-project(cn_patcher)
+project(psot_sans_battle)
 
 # C++标准
 set(CMAKE_CXX_STANDARD 17)

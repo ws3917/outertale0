@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(cn_patcher)
+project(psot_sans_battle)
 find_package(SDL3 REQUIRED CONFIG)
 find_package(SDL3_mixer REQUIRED CONFIG)
 
