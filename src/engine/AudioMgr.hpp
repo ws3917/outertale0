@@ -1,10 +1,11 @@
 // 资源管理器
 #pragma once
+#include <memory>
 #include <miniaudio/miniaudio.h>
 #include <string>
 #include <unordered_map>
 
-class AudioMgr
+class ImageMgr
 {
   public:
     enum class AudioType
@@ -13,13 +14,15 @@ class AudioMgr
         Sound
     };
     // 单例
-    static AudioMgr *get()
+    static ImageMgr *get()
     {
-        static AudioMgr instance;
+        static ImageMgr instance;
         return &instance;
     }
-    AudioMgr(const AudioMgr &) = delete;
-    AudioMgr &operator=(const AudioMgr &) = delete;
+    ImageMgr(const ImageMgr &) = delete;
+    ImageMgr &operator=(const ImageMgr &) = delete;
+
+    bool init();
 
     // 加载资源
     bool load(AudioType type, const std::string &name, const std::string &path);
@@ -31,9 +34,9 @@ class AudioMgr
     void clear();
 
   private:
-    AudioMgr();
-    ~AudioMgr();
+    ImageMgr() = default;
+    ~ImageMgr();
 
     ma_engine engine;
-    std::unordered_map<std::string, ma_sound> sounds;
+    std::unordered_map<std::string, std::unique_ptr<ma_sound>> images;
 };

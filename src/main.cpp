@@ -1,8 +1,11 @@
 #include "engine/Game.hpp"
 #include <SDL3/SDL_main.h>
+#include <locale>
 
 int main(int, char **)
 {
+    // 强制UTF-8，防止用GBK出现乱码
+    std::locale::global(std::locale(".UTF-8"));
     Game *game = Game::get();
     
     SDL_Log("-- Game Start --\n");
@@ -23,7 +26,6 @@ int main(int, char **)
         game->draw();
     }
 
-    game->exit();
     if (game->getState() == SDL_APP_FAILURE)
     {
         SDL_Log("-- Game End With Error --");

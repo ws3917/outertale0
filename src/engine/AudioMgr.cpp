@@ -1,73 +1,78 @@
+#define MINIAUDIO_IMPLEMENTATION
 #include "AudioMgr.hpp"
-#include "Game.hpp"
-#include "SDL3/SDL_log.h"
+#include <SDL3/SDL_log.h>
 
-AudioMgr::AudioMgr()
+bool ImageMgr::init()
 {
     ma_result result = ma_engine_init(nullptr, &engine);
     if (result != MA_SUCCESS)
     {
         SDL_Log("[C] <AudioMgr> Failed to initialize audio engine, error code = %d", result);
-        Game::get()->abort(true);
+        return false;
     }
+    return true;
 }
 
-AudioMgr::~AudioMgr()
+ImageMgr::~ImageMgr()
 {
     clear();
     ma_engine_uninit(&engine);
 }
 
-void AudioMgr::clear()
+void ImageMgr::clear()
 {
-    for (auto &[_, sound] : sounds)
+    for (auto &[_, sound] : images)
     {
-        ma_sound_stop(&sound);
-        ma_sound_uninit(&sound);
+        ma_sound_stop(sound.get());
+        ma_sound_uninit(sound.get());
     }
-    sounds.clear();
+    images.clear();
 }
 
-ma_sound *AudioMgr::find(const std::string &name)
+ma_sound *ImageMgr::find(const std::string &name)
 {
-    auto it = sounds.find(name);
-    if (it == sounds.end())
+    auto it = images.find(name);
+    if (it == images.end())
     {
         SDL_Log("[E] <AudioMgr> Can't find sound: %s", name.c_str());
         return nullptr;
     }
-    return &it->second;
+    return it->second.get();
 }
 
-void AudioMgr::play(const std::string &name, bool loop, bool resume)
+void ImageMgr::play(const std::string &name, bool loop, bool resume)
 {
     auto sound = find(name);
+    if (!sound)
+        return;
     ma_sound_set_looping(sound, loop);
     if (!resume)
         ma_sound_seek_to_pcm_frame(sound, 0);
     ma_sound_start(sound);
 }
 
-void AudioMgr::stop(const std::string &name)
+void ImageMgr::stop(const std::string &name)
 {
     auto sound = find(name);
+    if (!sound)
+        return;
     ma_sound_stop(sound);
 }
 
-bool AudioMgr::load(AudioType type, const std::string &name, const std::string &path)
+bool ImageMgr::load(AudioType type, const std::string &name, const std::string &path)
 {
-    if (sounds.count(name))
+    if (images.count(name))
         return true;
 
     ma_sound_flags flags = type == AudioType::Music ? MA_SOUND_FLAG_STREAM : MA_SOUND_FLAG_DECODE;
 
-    ma_sound sound{};
-    ma_result res = ma_sound_init_from_file(&engine, path.c_str(), flags, nullptr, nullptr, &sound);
+    auto sound = std::make_unique<ma_sound>();
+    ma_result res = ma_sound_init_from_file(&engine, path.c_str(), flags, nullptr, nullptr, sound.get());
     if (res != MA_SUCCESS)
     {
         SDL_Log("[E] <AudioMgr> Can't load sound: %s", name.c_str());
         return false;
     }
-    sounds.emplace(name, std::move(sound));
+    images.emplace(name, std::move(sound));
     return true;
 }

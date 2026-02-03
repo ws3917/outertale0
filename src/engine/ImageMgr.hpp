@@ -4,37 +4,38 @@
 #include <unordered_map>
 #include <SDL3/SDL.h>
 
-class AudioMgr
+class ImageMgr
 {
   public:
     // 单例
-    static AudioMgr *get()
+    static ImageMgr *get()
     {
-        static AudioMgr instance;
+        static ImageMgr instance;
         return &instance;
     }
-    AudioMgr(const AudioMgr &) = delete;
-    AudioMgr &operator=(const AudioMgr &) = delete;
+    ImageMgr(const ImageMgr &) = delete;
+    ImageMgr &operator=(const ImageMgr &) = delete;
 
+    bool init();
     // 加载资源
     template <typename T> T *load(SDL_Renderer *renderer, const std::string &name, const std::string &path);
     template <typename T> T *get(const std::string &name);
 
     void clear()
     {
-        for (auto &[name, tex] : sounds)
+        for (auto &[name, tex] : images)
         {
-            SDL_DestroyTexture(tex);
+            SDL_DestroyTexture(tex.first);
         }
-        sounds.clear();
+        images.clear();
     }
 
   private:
-    AudioMgr() = default;
-    ~AudioMgr()
+    ImageMgr() = default;
+    ~ImageMgr()
     {
         clear();
     }
 
-    std::unordered_map<std::string, SDL_Texture *> sounds;
+    std::unordered_map<std::string, std::pair<SDL_Texture *, int>> images;
 };

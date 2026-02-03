@@ -1,8 +1,9 @@
 #pragma once
 // 这里是主线程循环
+#include "E_Types.hpp"
 #include <SDL3/SDL.h>
-#include <miniaudio/miniaudio.h>
-class E_Scene;
+#include <memory>
+#include "E_Scene.hpp"
 class Game
 {
   public:
@@ -29,8 +30,8 @@ class Game
   private:
     Game() = default;
     ~Game() = default;
-    SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
-    E_Scene *current_scene = nullptr;
+    E_Types::WindowPtr window{};
+    E_Types::RendererPtr renderer{};
     SDL_AppResult state = SDL_APP_CONTINUE;
+    std::unique_ptr<E_Scene> current_scene = nullptr;
 };
