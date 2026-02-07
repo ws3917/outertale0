@@ -6,7 +6,6 @@ int main(int, char**) {
   // 强制UTF-8，防止用GBK出现乱码
   //    std::locale::global(std::locale(".UTF-8"));
   Game* game = Game::get();
-
   SDL_Log("-- Game Start --\n");
   game->init();
   // 进入初始场景

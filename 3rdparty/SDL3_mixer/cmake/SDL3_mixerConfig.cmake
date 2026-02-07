@@ -5,7 +5,7 @@
 ####### Any changes to this file will be overwritten by the next CMake run ####
 ####### The input file was SDL3_mixerConfig.cmake.in                            ########
 
-get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../" ABSOLUTE)
 
 macro(check_required_components _NAME)
   foreach(comp ${${_NAME}_FIND_COMPONENTS})
@@ -27,7 +27,7 @@ set_package_properties(SDL3_mixer PROPERTIES
 
 set(SDL3_mixer_FOUND               ON)
 
-set(SDLMIXER_VENDORED              OFF)
+set(SDLMIXER_VENDORED              false)
 
 set(SDLMIXER_FLAC                  TRUE)
 set(SDLMIXER_FLAC_LIBFLAC          FALSE)
@@ -173,7 +173,7 @@ endif()
 ####### Any changes to this file will be overwritten by the next CMake run ####
 ####### The input file was SDL3_mixerConfig.cmake.in                            ########
 
-get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../" ABSOLUTE)
+get_filename_component(PACKAGE_PREFIX_DIR "${CMAKE_CURRENT_LIST_DIR}/../" ABSOLUTE)
 
 macro(check_required_components _NAME)
   foreach(comp ${${_NAME}_FIND_COMPONENTS})

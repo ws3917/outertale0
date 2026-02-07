@@ -21,12 +21,21 @@ bool AudioMgr::init() {
 
 AudioMgr::~AudioMgr() {
   clear();
-  for (auto track : tracks) MIX_DestroyTrack(track);
-  MIX_DestroyMixer(mixer);
+  for (auto& track : tracks) {
+    MIX_DestroyTrack(track);
+    track = nullptr;
+  }
+  if (mixer) {
+    MIX_DestroyMixer(mixer);
+    mixer = nullptr;
+  }
 }
 
 void AudioMgr::clear() {
   MIX_StopAllTracks(mixer, 0);
+  for (auto& track : tracks) {
+    if (track) MIX_SetTrackAudio(track, nullptr);
+  }
   for (auto& [_, obj] : audio_assets) MIX_DestroyAudio(obj.first);
   audio_assets.clear();
 }
@@ -63,8 +72,8 @@ bool AudioMgr::load(AudioType type, const std::string& name,
                                    type == AudioType::Music ? false : true);
 
   if (!audio) {
-    SDL_Log("[E] <AudioMgr> Can't load sound '%s': %s",
-            path.c_str(), SDL_GetError());
+    SDL_Log("[E] <AudioMgr> Can't load sound '%s': %s", path.c_str(),
+            SDL_GetError());
     return false;
   }
   audio_assets[name] = {audio, type};
