@@ -1,8 +1,9 @@
 build/
 /install/
-/android/app/.cxx
-.cache
-.gradle
+/android/.cxx
 keystore.properties
 compile_commands.json
 /.clangd
+.gradle
+.kotlin
+.cache
