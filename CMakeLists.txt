@@ -65,7 +65,7 @@ if(WIN32)
     )
     install(FILES
         $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>
-        DESTINATION bin
+        DESTINATION .
     )
 endif()
 
