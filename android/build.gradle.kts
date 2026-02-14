@@ -26,7 +26,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments("-DANDROID_PLATFORM=android-21", "-DANDROID_STL=c++_shared")
-                abiFilters("arm64-v8a", "armeabi-v7a", "x86", "x86_64")
+                abiFilters("arm64-v8a")
             }
         }
     }
