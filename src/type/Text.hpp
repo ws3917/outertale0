@@ -1,6 +1,4 @@
 #pragma once
-#include <string>
-
 #include "../engine/FontMgr.hpp"
 #include "../engine/Global.hpp"
 #include "../engine/Object.hpp"

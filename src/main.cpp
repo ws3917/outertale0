@@ -1,5 +1,3 @@
-#include <SDL3_mixer/SDL_mixer.h>
-
 #include "engine/Global.hpp"
 #include "scene/S_Init.hpp"
 

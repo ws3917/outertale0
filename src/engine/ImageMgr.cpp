@@ -2,8 +2,6 @@
 
 #include <yyjson.h>
 
-#include "SDL3/SDL_render.h"
-
 ImageMgr::ImageMgr(SDL_Renderer* renderer) : renderer(renderer) {}
 bool ImageMgr::load(const std::string& name, const std::string& path,
                     int frame_count) {

@@ -1,6 +1,4 @@
 #pragma once
-#include <string>
-
 #include "../engine/Global.hpp"
 #include "../engine/ImageMgr.hpp"
 #include "../engine/Object.hpp"

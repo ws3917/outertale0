@@ -1,9 +1,7 @@
 #include "AudioMgr.hpp"
 
-#include <SDL3_mixer/SDL_mixer.h>
 #include <yyjson.h>
 
-#include <array>
 
 AudioMgr::AudioMgr(MIX_Mixer* mixer) : mixer(mixer) {}
 bool AudioMgr::init() {
@@ -106,8 +104,8 @@ bool AudioMgr::load(const std::string& name, const std::string& type,
                     const std::string& path) {
   if (audio_assets.count(name)) return true;
 
-  MIX_Audio* audio = MIX_LoadAudio(mixer, path.c_str(),
-                                   type == "music" ? false : true);
+  MIX_Audio* audio =
+      MIX_LoadAudio(mixer, path.c_str(), type == "music" ? false : true);
 
   if (!audio) {
     SDL_Log("[E] <AudioMgr> Can't load sound '%s': %s", path.c_str(),

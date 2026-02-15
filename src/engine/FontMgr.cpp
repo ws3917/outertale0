@@ -3,9 +3,7 @@
 #include <yyjson.h>
 
 #include <algorithm>
-#include <string>
 
-#include "SDL3/SDL_render.h"
 
 FontMgr::FontMgr(SDL_Renderer* renderer) : renderer(renderer) {}
 bool FontMgr::load(const std::string& name, const std::string& path) {
