@@ -4,7 +4,6 @@
 
 #include <algorithm>
 
-
 FontMgr::FontMgr(SDL_Renderer* renderer) : renderer(renderer) {}
 bool FontMgr::load(const std::string& name, const std::string& path) {
   size_t data_size;
@@ -109,33 +108,27 @@ bool FontMgr::loadText(const std::string& config_path) {
   }
   return true;
 }
-void FontMgr::draw(const std::string& name, const std::string& text, float x,
-                   float y, SDL_Color color, float scale) {
-  if (!font_assets.count(name)) {
-    SDL_Log("[E] <DrawFont> Can't find font '%s': %s", name.c_str(),
-            SDL_GetError());
-    return;
+std::string FontMgr::format(const std::string& text) {
+  if (!text_table || text.find("${") == std::string::npos) {
+    return text;
   }
+
   std::string result;
-  result.reserve(text.size());
+  result.reserve(text.size() * 1.5);  // 预分配一点空间
+
   for (size_t i = 0; i < text.size(); ++i) {
     bool replaced = false;
-    // 检查 ${...}
     if (text[i] == '$' && i + 1 < text.size() && text[i + 1] == '{') {
       size_t start = i + 2;
       size_t end = text.find('}', start);
       if (end != std::string::npos) {
         std::string key = "." + text.substr(start, end - start);
         std::replace(key.begin(), key.end(), '.', '/');
-        if (text_table) {
-          yyjson_val* val = yyjson_doc_ptr_get(text_table, key.c_str());
-          if (!val) {
-            SDL_Log("[W] Key %s missing", key.c_str());
-          } else if (yyjson_is_str(val)) {
-            result += yyjson_get_str(val);
-            i = end;
-            replaced = true;
-          }
+        yyjson_val* val = yyjson_doc_ptr_get(text_table, key.c_str());
+        if (val && yyjson_is_str(val)) {
+          result += yyjson_get_str(val);
+          i = end;
+          replaced = true;
         }
       }
     }
@@ -143,12 +136,21 @@ void FontMgr::draw(const std::string& name, const std::string& text, float x,
       result += text[i];
     }
   }
+  return result;
+}
+void FontMgr::draw(const std::string& name, const std::string& text, float x,
+                   float y, SDL_Color color, float scale) {
+  if (!font_assets.count(name)) {
+    SDL_Log("[E] <DrawFont> Can't find font '%s': %s", name.c_str(),
+            SDL_GetError());
+    return;
+  }
 
   Font* font = font_assets.find(name)->second;
   SDL_SetTextureColorMod(font->atlas, color.r, color.g, color.b);
   float cur_x = x, cur_y = y;
-  for (size_t i = 0; i < result.length();) {
-    uint32_t code = getNextUTF8(result, i);
+  for (size_t i = 0; i < text.length();) {
+    uint32_t code = getNextUTF8(text, i);
 
     // 换行
     if (code == '\n') {

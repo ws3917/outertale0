@@ -25,6 +25,7 @@ class FontMgr final {
   bool load(const std::string& name, const std::string& path);
   bool loadText(const std::string& config_path);
   bool loads(const std::string& config_path);
+  std::string format(const std::string& text);
   void draw(const std::string& name, const std::string& text, float x, float y,
             SDL_Color color, float scale);
   FontMgr(SDL_Renderer* renderer);
