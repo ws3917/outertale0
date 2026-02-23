@@ -1,0 +1,158 @@
+{
+    "version": 8,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "vcpkg-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_OVERLAY_PORTS": "${sourceDir}/3rdparty"
+            }
+        },
+        {
+            "name": "debug-base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "release-base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_FLAGS_RELEASE": "-O2 -DNDEBUG -ffunction-sections -fdata-sections",
+                "CMAKE_CXX_FLAGS_RELEASE": "-O2 -DNDEBUG -ffunction-sections -fdata-sections",
+                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s",
+                "CMAKE_SHARED_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s"
+            }
+        },
+        {
+            "name": "release-base-msvc",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_C_FLAGS_RELEASE": "/O2 /DNDEBUG /Gy /Gw",
+                "CMAKE_CXX_FLAGS_RELEASE": "/O2 /DNDEBUG /Gy /Gw",
+                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "/MACHINE:X64 /OPT:REF /OPT:ICF",
+                "CMAKE_SHARED_LINKER_FLAGS_RELEASE": "/MACHINE:X64 /OPT:REF /OPT:ICF"
+            }
+        },
+        {
+            "name": "win-mingw-base",
+            "hidden": true,
+            "inherits": "vcpkg-base",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-mingw-dynamic",
+                "VCPKG_HOST_TRIPLET": "x64-mingw-dynamic",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_EXE_LINKER_FLAGS": "-static"
+            }
+        },
+        {
+            "name": "win-msvc-base",
+            "hidden": true,
+            "inherits": "vcpkg-base",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows",
+                "CMAKE_C_COMPILER": "cl",
+                "CMAKE_CXX_COMPILER": "cl",
+                "CMAKE_C_FLAGS": "/utf-8 /MP",
+                "CMAKE_CXX_FLAGS": "/utf-8 /MP /EHsc",
+                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+            }
+        },
+        {
+            "name": "linux-gcc-base",
+            "hidden": true,
+            "inherits": "vcpkg-base",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-linux-dynamic",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "android-arm64-base",
+            "hidden": true,
+            "inherits": "vcpkg-base",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "arm64-android",
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake"
+            }
+        },
+        {
+            "name": "win-mingw-debug",
+            "inherits": [
+                "win-mingw-base",
+                "debug-base"
+            ],
+            "displayName": "Windows MinGW GCC (Debug)"
+        },
+        {
+            "name": "win-mingw-release",
+            "inherits": [
+                "win-mingw-base",
+                "release-base"
+            ],
+            "displayName": "Windows MinGW GCC (Release)"
+        },
+        {
+            "name": "win-msvc-debug",
+            "inherits": [
+                "win-msvc-base",
+                "debug-base"
+            ],
+            "displayName": "Windows MSVC (Debug)"
+        },
+        {
+            "name": "win-msvc-release",
+            "inherits": [
+                "win-msvc-base",
+                "release-base-msvc"
+            ],
+            "displayName": "Windows MSVC (Release)"
+        },
+        {
+            "name": "linux-gcc-debug",
+            "inherits": [
+                "linux-gcc-base",
+                "debug-base"
+            ],
+            "displayName": "Linux GCC (Debug)"
+        },
+        {
+            "name": "linux-gcc-release",
+            "inherits": [
+                "linux-gcc-base",
+                "release-base"
+            ],
+            "displayName": "Linux GCC (Release)"
+        },
+        {
+            "name": "android-arm64-debug",
+            "inherits": [
+                "android-arm64-base",
+                "debug-base"
+            ],
+            "displayName": "Android ARM64 (Debug)"
+        },
+        {
+            "name": "android-arm64-release",
+            "inherits": [
+                "android-arm64-base",
+                "release-base"
+            ],
+            "displayName": "Android ARM64 (Release)"
+        }
+    ]
+}

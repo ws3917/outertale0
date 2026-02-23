@@ -1,0 +1,21 @@
+{
+  "dependencies": [
+    "sdl3",
+    "miniaudio",
+    "yyjson"
+  ],
+  "overrides": [
+    {
+      "name": "sdl3",
+      "version": "3.4.0"
+    },
+    {
+      "name": "miniaudio",
+      "version": "0.11.24"
+    },
+    {
+      "name": "yyjson",
+      "version": "0.12.0"
+    }
+  ]
+}

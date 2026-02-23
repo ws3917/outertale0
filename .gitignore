@@ -1,0 +1,10 @@
+build/
+/install/
+/android/.cxx
+keystore.properties
+compile_commands.json
+/.clangd
+.gradle
+.kotlin
+.cache
+/dist
