@@ -61,6 +61,5 @@ if(NOT ANDROID)
         COMMAND ${CMAKE_COMMAND} -E tar "c" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/main.pak" --format=zip "."
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/assets/
     )
-
     install(FILES $<TARGET_FILE_DIR:${PROJECT_NAME}>/main.pak DESTINATION .)
 endif()

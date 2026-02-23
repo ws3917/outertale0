@@ -11,6 +11,7 @@
             "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/${presetName}",
+            "installDir": "${sourceDir}/install/${presetName}",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
@@ -33,7 +34,7 @@
                 "CMAKE_CXX_FLAGS_RELEASE": "-O2 -DNDEBUG -ffunction-sections -fdata-sections",
                 "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s",
                 "CMAKE_SHARED_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s",
-                "CMAKE_INTERPROCEDURAL_OPTIMIZATION": "TRUE"
+                "CMAKE_INTERPROCEDURAL_OPTIMIZATION": true
             }
         },
         {
@@ -45,7 +46,7 @@
                 "CMAKE_CXX_FLAGS_RELEASE": "/O2 /DNDEBUG /Gy /Gw",
                 "CMAKE_EXE_LINKER_FLAGS_RELEASE": "/MACHINE:X64 /OPT:REF /OPT:ICF",
                 "CMAKE_SHARED_LINKER_FLAGS_RELEASE": "/MACHINE:X64 /OPT:REF /OPT:ICF",
-                "CMAKE_INTERPROCEDURAL_OPTIMIZATION": "TRUE"
+                "CMAKE_INTERPROCEDURAL_OPTIMIZATION": true
             }
         },
         {
@@ -57,7 +58,8 @@
                 "VCPKG_HOST_TRIPLET": "x64-mingw-dynamic",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++",
-                "CMAKE_EXE_LINKER_FLAGS": "-static"
+                "CMAKE_EXE_LINKER_FLAGS": "-static",
+                "X_VCPKG_APPLOCAL_DEPS_INSTALL": true
             }
         },
         {
@@ -70,7 +72,8 @@
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_C_FLAGS": "/utf-8 /MP",
                 "CMAKE_CXX_FLAGS": "/utf-8 /MP /EHsc",
-                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
+                "X_VCPKG_APPLOCAL_DEPS_INSTALL": true
             }
         },
         {
