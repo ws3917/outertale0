@@ -45,6 +45,7 @@ SDL_AppResult SDL_AppInit(void** _state, int, char** argv) {
               PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
       return SDL_APP_FAILURE;
     }
+    SDL_Log("[I] <Init> Asset VFS mounted.");
   }
 
   yyjson_doc* info = Utils::LoadJson("config/info.json");
