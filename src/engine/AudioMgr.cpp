@@ -4,26 +4,10 @@
 
 #include "Utils.hpp"
 
-
 AudioMgr::AudioMgr(ma_engine* mixer) : mixer(mixer) {}
 bool AudioMgr::loads(const std::string& config_path) {
   size_t size;
-  void* config_data = Utils::LoadToMem(config_path.c_str(), &size);
-  if (!config_data) {
-    SDL_Log("[E] <AudioMgr - loads> Can't open json file '%s'.",
-            config_path.c_str());
-    return false;
-  }
-  yyjson_read_err err;
-  yyjson_doc* config =
-      yyjson_read_opts((char*)config_data, size, 0, nullptr, &err);
-  if (!config) {
-    SDL_free(config_data);
-    SDL_Log("[E] <AudioMgr - loads> Can't parse json file %s: %s",
-            config_path.c_str(), err.msg);
-    return false;
-  }
-
+  yyjson_doc* config = Utils::LoadJson(config_path);
   yyjson_val* sounds = yyjson_doc_ptr_get(config, "/audio");
   if (!sounds || !yyjson_is_arr(sounds)) {
     SDL_Log("[E] <AudioMgr - loads> No sounds found in %s",
@@ -47,9 +31,9 @@ bool AudioMgr::loads(const std::string& config_path) {
       SDL_Log("[E] <AudioMgr - loads> Failed to load sound '%s'.", name);
   }
   yyjson_doc_free(config);
-  SDL_free(config_data);
   return true;
 }
+
 AudioMgr::~AudioMgr() {
   for (auto& [_, obj] : audio_assets) {
     ma_decoder_uninit(obj.decoder);
@@ -84,7 +68,7 @@ bool AudioMgr::load(const std::string& name, const std::string& type,
                     const std::string& path) {
   if (audio_assets.count(name)) return true;
   size_t data_size;
-  void* data = Utils::LoadToMem(path.c_str(), &data_size);
+  void* data = Utils::LoadFile(path, &data_size);
   if (!data) {
     SDL_Log("[E] <AudioMgr - load> Sound file is not found: %s", path.c_str());
     return false;

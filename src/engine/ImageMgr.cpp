@@ -7,14 +7,7 @@
 ImageMgr::ImageMgr(SDL_Renderer* renderer) : renderer(renderer) {}
 bool ImageMgr::load(const std::string& name, const std::string& path,
                     int frame_count) {
-  size_t size = 0;
-  void* data = Utils::LoadToMem(path.c_str(), &size);
-  SDL_Surface* surface = nullptr;
-  if (data) {
-    SDL_IOStream* io = SDL_IOFromConstMem(data, size);
-    if (io) surface = SDL_LoadPNG_IO(io, true);
-    SDL_free(data);
-  }
+  SDL_Surface* surface = Utils::LoadPNG(path);
   if (!surface) {
     SDL_Log("[E] <ImageMgr - load> Can't load image '%s': %s", path.c_str(),
             SDL_GetError());
@@ -33,21 +26,7 @@ bool ImageMgr::load(const std::string& name, const std::string& path,
 }
 bool ImageMgr::loads(const std::string& config_path) {
   size_t size;
-  void* config_data = Utils::LoadToMem(config_path.c_str(), &size);
-  if (!config_data) {
-    SDL_Log("[E] <ImageMgr - loads> Can't open json file '%s': %s",
-            config_path.c_str(), SDL_GetError());
-    return false;
-  }
-  yyjson_read_err err;
-  yyjson_doc* config =
-      yyjson_read_opts((char*)config_data, size, 0, nullptr, &err);
-  if (!config) {
-    SDL_free(config_data);
-    SDL_Log("[E] <ImageMgr - loads> Can't parse json file %s: %s",
-            config_path.c_str(), err.msg);
-    return false;
-  }
+  yyjson_doc* config = Utils::LoadJson(config_path);
   yyjson_val* images = yyjson_doc_ptr_get(config, "/image");
   if (!images || !yyjson_is_arr(images)) {
     SDL_Log("[E] <ImageMgr - loads> No images found in %s",
@@ -72,7 +51,6 @@ bool ImageMgr::loads(const std::string& config_path) {
       SDL_Log("[I] <ImageMgr - loads> Failed to load image '%s'.", name);
   }
   yyjson_doc_free(config);
-  SDL_free(config_data);
   return true;
 }
 int ImageMgr::getFrame(const std::string& name) {

@@ -9,12 +9,12 @@
 FontMgr::FontMgr(SDL_Renderer* renderer) : renderer(renderer) {}
 bool FontMgr::load(const std::string& name, const std::string& path) {
   size_t data_size;
-  void* raw_data = Utils::LoadToMem(path.c_str(), &data_size);
-  if (!raw_data) {
+  void* fnt_data = Utils::LoadFile(path, &data_size);
+  if (!fnt_data) {
     SDL_Log("[E] <FontMgr - load> Fnt file is not found: %s", path.c_str());
     return false;
   }
-  uint8_t* file = static_cast<uint8_t*>(raw_data);
+  uint8_t* file = static_cast<uint8_t*>(fnt_data);
   uint8_t* end = file + data_size;
 
   // 加载字图
@@ -23,18 +23,11 @@ bool FontMgr::load(const std::string& name, const std::string& path) {
   if (pos != std::string::npos) {
     glyph_path.replace(pos, 4, "_0.png");
   }
-  size_t size = 0;
-  void* data = Utils::LoadToMem(glyph_path.c_str(), &size);
-  SDL_Surface* glyph_file = nullptr;
-  if (data) {
-    SDL_IOStream* io = SDL_IOFromConstMem(data, size);
-    if (io) glyph_file = SDL_LoadPNG_IO(io, true);
-    SDL_free(data);
-  }
+  SDL_Surface* glyph_file = Utils::LoadPNG(glyph_path);
   if (!glyph_file) {
     SDL_Log("[E] <FontMgr - load> Can't open glyph file %s: %s",
             glyph_path.c_str(), SDL_GetError());
-    SDL_free(raw_data);
+    SDL_free(fnt_data);
     return false;
   }
   Font* font = new Font;
@@ -89,33 +82,8 @@ bool FontMgr::load(const std::string& name, const std::string& path) {
     }
     file = next_block_pos;
   }
-  SDL_free(raw_data);
+  SDL_free(fnt_data);
   font_assets[name] = font;
-  return true;
-}
-bool FontMgr::loadText(const std::string& config_path) {
-  size_t size;
-  void* config_data = Utils::LoadToMem(config_path.c_str(), &size);
-  if (!config_data) {
-    SDL_Log("[E] <FontMgr - loadText> Can't open json file '%s': %s",
-            config_path.c_str(), SDL_GetError());
-    return false;
-  }
-  // 清理已打开文件
-  if (text_table) {
-    SDL_Log(
-        "[I] <FontMgr - loadText> Found existing text table, will clean it.");
-    yyjson_doc_free(text_table);
-    text_table = nullptr;
-  }
-  yyjson_read_err err;
-  text_table = yyjson_read_opts((char*)config_data, size, 0, nullptr, &err);
-  if (!text_table) {
-    SDL_free(config_data);
-    SDL_Log("[E] <FontMgr - loadText> Can't parse json file '%s': %s",
-            config_path.c_str(), err.msg);
-    return false;
-  }
   return true;
 }
 std::string FontMgr::format(const std::string& text) {
@@ -202,23 +170,7 @@ uint32_t FontMgr::getNextUTF8(const std::string& str, size_t& i) {
   return '?';
 }
 bool FontMgr::loads(const std::string& config_path) {
-  size_t size;
-  void* config_data = Utils::LoadToMem(config_path.c_str(), &size);
-  if (!config_data) {
-    SDL_Log("[E] <FontMgr - loads> Can't open json file '%s': %s",
-            config_path.c_str(), SDL_GetError());
-    return false;
-  }
-  yyjson_read_err err;
-  yyjson_doc* config =
-      yyjson_read_opts((char*)config_data, size, 0, nullptr, &err);
-  if (!config) {
-    SDL_free(config_data);
-    SDL_Log("[E] <FontMgr - loads> Can't parse json file %s: %s",
-            config_path.c_str(), err.msg);
-    return false;
-  }
-
+  yyjson_doc* config = Utils::LoadJson(config_path);
   yyjson_val* fonts = yyjson_doc_ptr_get(config, "/font");
   if (!fonts || !yyjson_is_arr(fonts)) {
     SDL_Log("[E] <FontMgr - loads> No fonts found in %s", config_path.c_str());
@@ -238,8 +190,11 @@ bool FontMgr::loads(const std::string& config_path) {
       SDL_Log("[E] <FontMgr - loads> Failed to load font '%s'.", name);
   }
   yyjson_doc_free(config);
-  SDL_free(config_data);
   return true;
+}
+bool FontMgr::loadText(const std::string& config_path) {
+  text_table = Utils::LoadJson(config_path);
+  return text_table != nullptr;
 }
 FontMgr::~FontMgr() {
   if (text_table) {

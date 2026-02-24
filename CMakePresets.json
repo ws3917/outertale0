@@ -52,7 +52,7 @@
             "name": "win-msvc-base",
             "hidden": true,
             "inherits": "vcpkg-base",
-            "architecture":{
+            "architecture": {
                 "value": "x64",
                 "strategy": "external"
             },
@@ -78,6 +78,35 @@
                 "VCPKG_TARGET_TRIPLET": "custom-x64-linux-dynamic",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++"
+            }
+        },
+        {
+            "name": "wasm-base",
+            "hidden": true,
+            "inherits": "vcpkg-base",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "wasm32-emscripten",
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+            }
+        },
+        {
+            "name": "wasm-debug",
+            "inherits": [
+                "wasm-base",
+                "debug-base"
+            ],
+            "displayName": "WebAssembly (Debug)"
+        },
+        {
+            "name": "wasm-release",
+            "inherits": [
+                "wasm-base",
+                "release-base"
+            ],
+            "displayName": "WebAssembly (Release)",
+            "cacheVariables": {
+                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-O3 -sSIDE_MODULE=0"
             }
         },
         {

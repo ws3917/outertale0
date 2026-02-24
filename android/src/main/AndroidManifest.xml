@@ -43,10 +43,12 @@
     -->
 
     <!-- Allow downloading to the external storage on Android 5.1 and older -->
-    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="22" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    android:maxSdkVersion="22" /> -->
 
     <!-- Allow access to Bluetooth devices -->
-    <!-- Currently this is just for Steam Controller support and requires setting SDL_HINT_JOYSTICK_HIDAPI_STEAM -->
+    <!-- Currently this is just for Steam Controller support and requires setting
+    SDL_HINT_JOYSTICK_HIDAPI_STEAM -->
     <!-- <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> -->
     <!-- <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> -->
 
@@ -60,7 +62,8 @@
     -->
 
     <!-- Create a Java class extending SDLActivity and place it in a
-         directory under app/src/main/java matching the package, e.g. app/src/main/java/com/gamemaker/game/MyGame.java
+         directory under app/src/main/java matching the package, e.g.
+    app/src/main/java/com/gamemaker/game/MyGame.java
 
          then replace "SDLActivity" with the name of your class (e.g. "MyGame")
          in the XML below.
@@ -72,7 +75,7 @@
         android:allowBackup="true"
         android:theme="@style/AppTheme"
         android:enableOnBackInvokedCallback="false"
-        android:hardwareAccelerated="true" >
+        android:hardwareAccelerated="true">
 
         <!-- Example of setting SDL hints from AndroidManifest.xml:
         <meta-data android:name="SDL_ENV.SDL_ANDROID_TRAP_BACK_BUTTON" android:value="0"/>
@@ -85,8 +88,8 @@
             android:configChanges="layoutDirection|locale|grammaticalGender|fontScale|fontWeightAdjustment|orientation|uiMode|screenLayout|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:preferMinimalPostProcessing="true"
             android:exported="true"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="sensorLandscape"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

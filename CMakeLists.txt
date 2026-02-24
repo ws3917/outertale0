@@ -19,7 +19,22 @@ find_path(MINIAUDIO_INCLUDE_DIRS "miniaudio.h")
 # -- 项目构建 --
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
-if(ANDROID)
+if(EMSCRIPTEN)
+    add_executable(${PROJECT_NAME} ${SOURCES})
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        OUTPUT_NAME "index"
+        SUFFIX ".html"
+    )
+    target_link_options(${PROJECT_NAME} PRIVATE
+        "-sUSE_SDL=0" # 告诉 Emscripten 使用 vcpkg 提供的 SDL3，而不是自带的 SDL2 端口
+        "-sALLOW_MEMORY_GROWTH=1"
+        "-sEXIT_RUNTIME=1"
+        "--shell-file" "${CMAKE_SOURCE_DIR}/app/index.html"
+    )
+    target_link_options(${PROJECT_NAME} PRIVATE
+        "--preload-file" "${CMAKE_SOURCE_DIR}/assets@/"
+    )
+elseif(ANDROID)
     add_library(${PROJECT_NAME} SHARED ${SOURCES})
     set_target_properties(${PROJECT_NAME} PROPERTIES
         OUTPUT_NAME "main"
@@ -46,11 +61,21 @@ endif()
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${MINIAUDIO_INCLUDE_DIRS}
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    SDL3::SDL3-shared
-    PhysFS::PhysFS
-    yyjson::yyjson
-)
+
+if(EMSCRIPTEN)
+    # Web 环境强制链接静态版本
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        SDL3::SDL3-static
+        PhysFS::PhysFS-static
+        yyjson::yyjson
+    )
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        SDL3::SDL3-shared
+        PhysFS::PhysFS
+        yyjson::yyjson
+    )
+endif()
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION .
@@ -59,7 +84,12 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 # -- 安装后配置 --
-if(NOT ANDROID)
+if(EMSCRIPTEN)
+    file(COPY ${CMAKE_SOURCE_DIR}/app/icon.ico
+        DESTINATION ${CMAKE_BINARY_DIR}/favicon.ico)
+endif()
+
+if(NOT ANDROID AND NOT EMSCRIPTEN)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E tar "c" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/main.pak" --format=zip "."
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/assets/
