@@ -85,8 +85,11 @@ install(TARGETS ${PROJECT_NAME}
 
 # -- 安装后配置 --
 if(EMSCRIPTEN)
-    file(COPY ${CMAKE_SOURCE_DIR}/app/icon.ico
-        DESTINATION ${CMAKE_BINARY_DIR}/favicon.ico)
+    configure_file(
+        ${CMAKE_SOURCE_DIR}/app/icon.ico
+        ${CMAKE_BINARY_DIR}/favicon.ico
+        COPYONLY
+    )
 endif()
 
 if(NOT ANDROID AND NOT EMSCRIPTEN)
