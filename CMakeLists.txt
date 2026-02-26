@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 
 set(VCPKG_OVERLAY_PORTS "${CMAKE_SOURCE_DIR}/vcpkg/ports")
 set(VCPKG_OVERLAY_TRIPLETS "${CMAKE_SOURCE_DIR}/vcpkg/triplets")
-project(outertale0 LANGUAGES C CXX)
+project(spacetime0 LANGUAGES C CXX)
 
 # C++标准
 set(CMAKE_CXX_STANDARD 17)
@@ -12,6 +12,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # -- 依赖管理 --
 # vcpkg 仓库的库
 find_package(PhysFS CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+find_package(SFML COMPONENTS Main Graphics Window Audio System CONFIG REQUIRED)
 
 # -- 项目构建 --
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
@@ -19,6 +21,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 if(WIN32)
     set(RC_FILES app/res.rc)
     add_executable(${PROJECT_NAME} ${SOURCES} ${RC_FILES})
+
     # Release 模式下隐藏控制台窗口
     set_target_properties(${PROJECT_NAME} PROPERTIES
         WIN32_EXECUTABLE $<CONFIG:Release>
@@ -33,7 +36,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    PhysFS::PhysFS
+    SFML::Main SFML::Graphics SFML::Window SFML::Audio SFML::System
+    nlohmann_json::nlohmann_json
+    PhysFS::PhysFS-static
 )
 
 install(TARGETS ${PROJECT_NAME}

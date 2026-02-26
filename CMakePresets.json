@@ -61,13 +61,23 @@
                 "strategy": "external"
             },
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-windows",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md-release",
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
                 "CMAKE_C_FLAGS": "/utf-8 /MP",
                 "CMAKE_CXX_FLAGS": "/utf-8 /MP /EHsc",
-                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>",
                 "X_VCPKG_APPLOCAL_DEPS_INSTALL": true
+            }
+        },
+        {
+            "name": "win-mingw-base",
+            "hidden": true,
+            "inherits": "vcpkg-base",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-mingw-static-release",
+                "VCPKG_HOST_TRIPLET": "x86-mingw-static-release",
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++"
             }
         },
         {
@@ -75,38 +85,9 @@
             "hidden": true,
             "inherits": "vcpkg-base",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-linux-dynamic",
+                "VCPKG_TARGET_TRIPLET": "x64-linux-release",
                 "CMAKE_C_COMPILER": "gcc",
                 "CMAKE_CXX_COMPILER": "g++"
-            }
-        },
-        {
-            "name": "wasm-base",
-            "hidden": true,
-            "inherits": "vcpkg-base",
-            "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "wasm32-emscripten",
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
-            }
-        },
-        {
-            "name": "wasm-debug",
-            "inherits": [
-                "wasm-base",
-                "debug-base"
-            ],
-            "displayName": "WebAssembly (Debug)"
-        },
-        {
-            "name": "wasm-release",
-            "inherits": [
-                "wasm-base",
-                "release-base"
-            ],
-            "displayName": "WebAssembly (Release)",
-            "cacheVariables": {
-                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-O3 -sSIDE_MODULE=0"
             }
         },
         {
@@ -124,6 +105,19 @@
                 "release-base-msvc"
             ],
             "displayName": "Windows MSVC (Release)"
+        },
+        {
+            "name": "win-mingw-release",
+            "inherits": [
+                "win-mingw-base",
+                "release-base"
+            ],
+            "displayName": "Windows MinGW (Release, Static, For Win7/WinXP)",
+            "cacheVariables": {
+                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s -static",
+                "CMAKE_SHARED_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s -static",
+                "CMAKE_INTERPROCEDURAL_OPTIMIZATION": false
+            }
         },
         {
             "name": "linux-gcc-debug",
