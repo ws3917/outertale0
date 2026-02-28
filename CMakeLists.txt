@@ -15,6 +15,10 @@ find_package(PhysFS CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(SFML COMPONENTS Graphics Window Audio System CONFIG REQUIRED)
 
+if(WIN32)
+    find_package(SFML COMPONENTS Main CONFIG REQUIRED)
+endif()
+
 # -- 项目构建 --
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
@@ -37,6 +41,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SFML::Graphics SFML::Window SFML::Audio SFML::System
+    $<$<BOOL:WIN32>:SFML::Main>
     nlohmann_json::nlohmann_json
     PhysFS::PhysFS-static
 )
