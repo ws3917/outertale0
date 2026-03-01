@@ -38,10 +38,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SFML::Graphics SFML::Window SFML::Audio SFML::System
-    $<$<BOOL:WIN32>:SFML::Main>
     nlohmann_json::nlohmann_json
     PhysFS::PhysFS-static
 )
+
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Main)
+endif()
 
 install(TARGETS ${PROJECT_NAME}
     RUNTIME DESTINATION .
