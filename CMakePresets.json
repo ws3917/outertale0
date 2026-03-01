@@ -64,8 +64,8 @@
                 "VCPKG_TARGET_TRIPLET": "custom-x64-windows-win7",
                 "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl",
-                "CMAKE_C_FLAGS": "/utf-8 /MP /D_WIN32_WINNT=0x0601 /DWINVER=0x0601",
-                "CMAKE_CXX_FLAGS": "/utf-8 /MP /EHsc /D_WIN32_WINNT=0x0601 /DWINVER=0x0601",
+                "CMAKE_C_FLAGS": "/utf-8 /MP /D_WIN32_WINNT=0x0601 /DWINVER=0x0601 /W4",
+                "CMAKE_CXX_FLAGS": "/utf-8 /MP /EHsc /D_WIN32_WINNT=0x0601 /DWINVER=0x0601 /W4",
                 "X_VCPKG_APPLOCAL_DEPS_INSTALL": true
             }
         },

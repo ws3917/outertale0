@@ -48,17 +48,18 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 if(ANDROID)
     target_link_libraries(${PROJECT_NAME} PRIVATE android log)
-else()
+endif()
+
+# -- 安装后配置 --
+if(NOT ANDROID)
     install(TARGETS ${PROJECT_NAME}
         RUNTIME DESTINATION .
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
     )
 
-    # -- 安装后配置 --
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E tar "c" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/main.pak" --format=zip "."
-        COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE_DIR:${PROJECT_NAME}>/main.pak" "${CMAKE_SOURCE_DIR}/android/assets/main.pak"
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/assets/
     )
     install(FILES $<TARGET_FILE_DIR:${PROJECT_NAME}>/main.pak DESTINATION .)
