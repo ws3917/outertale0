@@ -1,0 +1,24 @@
+--------- beginning of main
+03-01 09:25:28.804  3984  3984 E xyz.ws3917.game: Not starting debugger since process cannot load the jdwp agent.
+--------- beginning of crash
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: FATAL EXCEPTION: main
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: Process: xyz.ws3917.game, PID: 3984
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: java.lang.UnsatisfiedLinkError: Unable to load native library "/data/app/~~WDSwTENZbuEiBZBvBj0xSA==/xyz.ws3917.game-d01sBTP__MGO78fPTwcGfQ==/base.apk!/lib/x86_64/libmain.so": undefined symbol: ANativeActivity_onCreate
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.NativeActivity.onCreate(NativeActivity.java:178)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.Activity.performCreate(Activity.java:9002)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.Activity.performCreate(Activity.java:8980)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1526)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:4030)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:4235)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:112)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.servertransaction.TransactionExecutor.executeNonLifecycleItem(TransactionExecutor.java:174)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.servertransaction.TransactionExecutor.executeTransactionItems(TransactionExecutor.java:109)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:81)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:2636)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:107)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.os.Looper.loopOnce(Looper.java:232)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:317)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:8705)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:580)
+03-01 09:25:28.870  3984  3984 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:886)

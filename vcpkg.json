@@ -2,7 +2,8 @@
   "dependencies": [
     "nlohmann-json",
     "physfs",
-    "sfml"
+    "sdl3",
+    "miniaudio"
   ],
   "overrides": [
     {
@@ -14,8 +15,12 @@
       "version": "3.2.0"
     },
     {
-      "name": "sfml",
-      "version": "3.0.2"
+      "name": "sdl3",
+      "version": "3.4.2"
+    },
+    {
+      "name": "miniaudio",
+      "version": "0.11.24"
     }
   ]
 }

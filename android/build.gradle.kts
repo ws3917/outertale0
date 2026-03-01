@@ -5,6 +5,11 @@ plugins {
     id("com.android.application") version "9.0.1"
 }
 
+val keystoreProperties = Properties()
+val keystoreFile = rootProject.file("keystore.properties")
+if (keystoreFile.exists()) {
+    keystoreFile.inputStream().use { keystoreProperties.load(it) }
+}
 
 android {
     namespace = "xyz.ws3917.game"
@@ -34,10 +39,21 @@ android {
             path = file("../CMakeLists.txt")
         }
     }
+    signingConfigs {
+        create("release") {
+            if (keystoreProperties.containsKey("STORE_FILE")) {
+                storeFile = file(keystoreProperties.getProperty("STORE_FILE"))
+                storePassword = keystoreProperties.getProperty("STORE_PASSWORD")
+                keyAlias = keystoreProperties.getProperty("KEY_ALIAS")
+                keyPassword = keystoreProperties.getProperty("KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }

@@ -4,5 +4,5 @@ elseif(ANDROID_ABI STREQUAL "x86_64")
     set(VCPKG_TARGET_TRIPLET "custom-x64-android" CACHE STRING "")
 endif()
 
-set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "$ENV{ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake" CACHE FILEPATH "")
+set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${ANDROID_NDK}/build/cmake/android.toolchain.cmake" CACHE FILEPATH "")
 include("$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake")
