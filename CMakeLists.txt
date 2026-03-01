@@ -15,10 +15,6 @@ find_package(PhysFS CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(SFML COMPONENTS Graphics Window Audio System CONFIG REQUIRED)
 
-if(WIN32)
-    find_package(SFML COMPONENTS Main CONFIG REQUIRED)
-endif()
-
 # -- 项目构建 --
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
@@ -27,6 +23,7 @@ if(WIN32)
     add_executable(${PROJECT_NAME} ${SOURCES} ${RC_FILES})
 
     # Release 模式下隐藏控制台窗口
+    find_package(SFML COMPONENTS Main CONFIG REQUIRED)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         WIN32_EXECUTABLE $<CONFIG:Release>
     )

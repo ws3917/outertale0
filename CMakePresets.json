@@ -71,17 +71,6 @@
             }
         },
         {
-            "name": "win-mingw-base",
-            "hidden": true,
-            "inherits": "vcpkg-base",
-            "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x86-mingw-static",
-                "VCPKG_HOST_TRIPLET": "x86-mingw-static",
-                "CMAKE_C_COMPILER": "gcc",
-                "CMAKE_CXX_COMPILER": "g++"
-            }
-        },
-        {
             "name": "linux-gcc-base",
             "hidden": true,
             "inherits": "vcpkg-base",
@@ -106,27 +95,6 @@
                 "release-base-msvc"
             ],
             "displayName": "Windows MSVC (Release)"
-        },
-        {
-            "name": "win-mingw-debug",
-            "inherits": [
-                "win-mingw-base",
-                "debug-base"
-            ],
-            "displayName": "Windows MinGW (Debug, For Win7/WinXP)"
-        },
-        {
-            "name": "win-mingw-release",
-            "inherits": [
-                "win-mingw-base",
-                "release-base"
-            ],
-            "displayName": "Windows MinGW (Release, For Win7/WinXP)",
-            "cacheVariables": {
-                "CMAKE_INTERPROCEDURAL_OPTIMIZATION": false,
-                "CMAKE_EXE_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s --static",
-                "CMAKE_SHARED_LINKER_FLAGS_RELEASE": "-Wl,--gc-sections -s --static"
-            }
         },
         {
             "name": "linux-gcc-debug",
