@@ -15,7 +15,6 @@
             android:icon="@drawable/sfml_logo"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true">
-
             <meta-data android:name="android.app.lib_name" android:value="sfml-example" />
 
             <intent-filter>
