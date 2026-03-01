@@ -14,6 +14,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(PhysFS CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(SDL3 CONFIG REQUIRED)
+find_package(SDL3_mixer CONFIG REQUIRED)
 
 # -- 项目构建 --
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
@@ -35,13 +36,9 @@ else()
     add_executable(${PROJECT_NAME} ${SOURCES})
 endif()
 
-# -- 链接 --
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${MINIAUDIO_INCLUDE_DIRS}
-)
-
 target_link_libraries(${PROJECT_NAME} PRIVATE
     SDL3::SDL3
+    SDL3_mixer::SDL3_mixer
     nlohmann_json::nlohmann_json
     PhysFS::PhysFS
 )

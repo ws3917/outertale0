@@ -3,7 +3,7 @@
     "nlohmann-json",
     "physfs",
     "sdl3",
-    "miniaudio"
+    "sdl3-mixer"
   ],
   "overrides": [
     {
@@ -19,8 +19,8 @@
       "version": "3.4.2"
     },
     {
-      "name": "miniaudio",
-      "version": "0.11.24"
+      "name": "sdl3-mixer",
+      "version": "3.1.2"
     }
   ]
 }

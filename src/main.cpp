@@ -1,5 +1,6 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <physfs.h>
 
 #include "save.hpp"
@@ -8,7 +9,8 @@
 
 int main(int, char** argv) {
   // 读取一张图片并显示
-  SDL_Init(SDL_INIT_VIDEO);
+  if (!SDL_Init(SDL_INIT_VIDEO)) return 1;
+  if (MIX_Init()) return 1;
   bool mount_success = false;
 #ifdef SDL_PLATFORM_ANDROID
   PHYSFS_init(reinterpret_cast<char*>(new PHYSFS_AndroidInit{
@@ -21,12 +23,10 @@ int main(int, char** argv) {
   mount_success = PHYSFS_mount(data_path, "/assets", 0);
 #endif
   if (!mount_success) {
-    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Can't mount game data! ");
-    PHYSFS_deinit();
-    SDL_Quit();
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Can't mount game data! ");
     return 1;
   }
-  SDL_LogInfo(SDL_LOG_CATEGORY_SYSTEM, "Mounted game data");
+  SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Mounted game data");
   Save save;
   SDL_CreateWindowAndRenderer(
       "hello", static_cast<int>(V::WINDOW_SCALE * V::RENDER_WIDTH),
@@ -52,7 +52,8 @@ int main(int, char** argv) {
     SDL_RenderPresent(save.meta.renderer);
   }
   PHYSFS_deinit();
+  MIX_Quit();
   SDL_Quit();
-  SDL_LogInfo(SDL_LOG_CATEGORY_SYSTEM, "Game stopped successfully!");
+  SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "Game stopped successfully!");
   return 0;
 }
