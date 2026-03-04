@@ -1,0 +1,16 @@
+# Xmake cache
+.xmake/
+build/
+
+# MacOS Cache
+.DS_Store
+
+.vscode
+/install/
+compile_commands.json
+/.clangd
+.gradle
+.kotlin
+.cache
+log.txt
+*.log

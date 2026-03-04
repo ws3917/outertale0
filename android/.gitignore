@@ -1,0 +1,13 @@
+local.properties
+.idea
+.gradle
+build
+android.iml
+app/build
+app/.cxx
+app/.externalNativeBuild
+app/src/main/obj
+
+src/main/jniLibs
+keystore.properties
+*.keystore

@@ -1,0 +1,15 @@
+{
+    "languages": "Languages",
+    "settings": {
+        "title": "Settings",
+        "bgm_volume": "Music volume",
+        "sfx_volume": "Sound volume",
+        "effects": "Effects",
+        "particles": "Particles",
+        "on": "ON",
+        "off": "OFF",
+        "default": "Default",
+        "save": "Save",
+        "cancel": "Cancel"
+    }
+}
