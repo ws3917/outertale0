@@ -27,11 +27,13 @@ Game::Game() {
   auto image_list = j.get<std::vector<std::string>>("/image");
   if (image_list.has_value())
     for (auto&& img : image_list.value()) res.getTexture(img);
-  current_scene.reset(new SInit(&res));
+  auto music_list = j.get<std::vector<std::string>>("/music");
+  if (music_list.has_value())
+    for (auto&& mus : music_list.value()) res.getMusic(mus);
+  changeScene(std::make_unique<SInit>(&res));
 }
 void Game::run() {
-  const float TICK_FREQ =
-      static_cast<float>(SDL_GetPerformanceFrequency()) / 1000;
+  const float TICK_FREQ = static_cast<float>(SDL_GetPerformanceFrequency());
   uint64_t current_tick;
   SDL_Event event;
   last_tick = SDL_GetPerformanceCounter();

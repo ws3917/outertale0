@@ -21,8 +21,13 @@ class Res {
   Font& getFont(const std::string& id);
 
  private:
+  struct MIX_AudioDeleter {
+    void operator()(MIX_Track* track) const;
+  };
   SDL_Renderer* renderer = nullptr;
   MIX_Mixer* mixer = nullptr;
+  std::unique_ptr<MIX_Track, MIX_AudioDeleter> music_track;
+  std::unique_ptr<MIX_Track, MIX_AudioDeleter> sound_track;
   std::unordered_map<std::string, std::unique_ptr<Texture>> texture_list = {};
   std::unordered_map<std::string, std::unique_ptr<Audio>> sound_list = {};
   std::unordered_map<std::string, std::unique_ptr<Audio>> music_list = {};

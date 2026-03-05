@@ -5,10 +5,12 @@
 void Texture::SDL_TextureDeleter::operator()(SDL_Texture* texture) const {
   if (texture) SDL_DestroyTexture(texture);
 }
+SDL_FPoint Texture::getSize() { return {w, h}; }
 void Texture::reset() {
   Object::reset();
   texture.reset();
   loaded = false;
+  w = h = 0.0f;
 }
 bool Texture::load(const std::string& filepath) {
   if (loaded) reset();
@@ -28,6 +30,24 @@ bool Texture::load(const std::string& filepath) {
                  SDL_GetError());
     return false;
   }
+  SDL_GetTextureSize(texture.get(), &w, &h);
   loaded = true;
   return true;
+}
+void Texture::draw(float x, float y, float scale) {
+  if (!loaded || !texture) return;
+  SDL_FRect dst_rect = {x, y, w * scale, h * scale};
+  SDL_RenderTexture(renderer, texture.get(), nullptr, &dst_rect);
+}
+void Texture::drawEx(const SDL_FRect* src, const SDL_FRect* dst, uint8_t alpha,
+                     double angle, SDL_FPoint* center, SDL_FlipMode flip) {
+  if (!loaded || !texture) return;
+  if (alpha != 255) {
+    SDL_SetTextureAlphaMod(texture.get(), alpha);
+  }
+  SDL_RenderTextureRotated(renderer, texture.get(), src, dst, angle, center,
+                           flip);
+  if (alpha != 255) {
+    SDL_SetTextureAlphaMod(texture.get(), 255);
+  }
 }

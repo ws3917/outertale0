@@ -1,5 +1,16 @@
 {
     "image": [
-       "bg_static" 
+       "bg_static",
+       "init/story_panel_1",
+       "init/story_panel_2",
+       "init/story_panel_3",
+       "init/story_panel_4",
+       "init/story_panel_5",
+       "init/story_panel_6",
+       "init/story_panel_7",
+       "init/story_panel_8"
+    ],
+    "music": [
+        "intro"
     ]
 }

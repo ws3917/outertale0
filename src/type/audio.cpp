@@ -20,5 +20,11 @@ bool Audio::load(const std::string& filepath) {
 }
 void Audio::play() {
   if (!loaded || !audio) return;
-  MIX_PlayAudio(mixer, audio.get());
+  MIX_SetTrackAudio(track, audio.get());
+  MIX_PlayTrack(track, 0);
+}
+void Audio::stop() {
+  if (!loaded || !audio) return;
+  MIX_SetTrackAudio(track, audio.get());
+  MIX_StopTrack(track, 0);
 }

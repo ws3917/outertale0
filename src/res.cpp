@@ -6,15 +6,20 @@
 
 Res::Res() = default;
 Res::~Res() = default;
+void Res::MIX_AudioDeleter::operator()(MIX_Track* track) const {
+  if (track) MIX_DestroyTrack(track);
+}
 void Res::init(SDL_Renderer* new_renderer, MIX_Mixer* new_mixer)
 {
   renderer = new_renderer;
   mixer = new_mixer;
+  music_track.reset(MIX_CreateTrack(mixer));
+  sound_track.reset(MIX_CreateTrack(mixer));
 }
 Audio& Res::getSound(const std::string& id) {
   auto result = sound_list.find(id);
   if (result != sound_list.end()) return *result->second;
-  auto sound = std::make_unique<Audio>(mixer);
+  auto sound = std::make_unique<Audio>(mixer, sound_track.get());
   sound->load("sound/" + id + ".mp3");
   auto [new_it, inserted] = sound_list.emplace(id, std::move(sound));
   return *new_it->second;
@@ -22,7 +27,7 @@ Audio& Res::getSound(const std::string& id) {
 Audio& Res::getMusic(const std::string& id) {
   auto result = music_list.find(id);
   if (result != music_list.end()) return *result->second;
-  auto music = std::make_unique<Audio>(mixer);
+  auto music = std::make_unique<Audio>(mixer, music_track.get());
   music->load("music/" + id + ".mp3");
   auto [new_it, inserted] = music_list.emplace(id, std::move(music));
   return *new_it->second;

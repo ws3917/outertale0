@@ -16,6 +16,6 @@ class Scene {
   virtual void exit() = 0;
 
  protected:
-  std::vector<Object> objects;
+  std::vector<Object*> objects;
   Res* res;
 };
