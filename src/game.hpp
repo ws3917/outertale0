@@ -1,10 +1,10 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 #include "type/object.hpp"
+#include <SDL3/SDL.h>
 
-class SDL_Window;
-class SDL_Renderer;
 class MIX_Mixer;
 class Game {
  public:
@@ -22,10 +22,4 @@ class Game {
   std::unique_ptr<SDL_Renderer, AssetDeleter> renderer;
   std::unique_ptr<MIX_Mixer, AssetDeleter> mixer;
   std::vector<Object> objects;
-};
-
-class GameContext {
- public:
-  GameContext();
-  ~GameContext();
 };

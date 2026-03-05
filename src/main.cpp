@@ -2,6 +2,8 @@
 #include <SDL3/SDL_main.h>
 
 #include "game.hpp"
+#include "gamecontext.hpp"
+
 
 int main(int, char** argv) {
   try {
