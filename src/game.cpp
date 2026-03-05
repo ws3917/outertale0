@@ -3,10 +3,11 @@
 #include <SDL3_mixer/SDL_mixer.h>
 
 #include "scene/init.hpp"
+#include "type/json.hpp"
 #include "values.hpp"
 
 Game::~Game() = default;
-Game::Game() : res(renderer.get(), mixer.get()) {
+Game::Game() {
   window.reset(SDL_CreateWindow(
       V::GAME_NAME, static_cast<int>(V::WINDOW_SCALE * V::RENDER_WIDTH),
       static_cast<int>(V::WINDOW_SCALE * V::RENDER_HEIGHT),
@@ -18,6 +19,14 @@ Game::Game() : res(renderer.get(), mixer.get()) {
                                    V::RENDER_HEIGHT,
                                    SDL_LOGICAL_PRESENTATION_LETTERBOX);
   mixer.reset(MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, 0));
+  res.init(renderer.get(), mixer.get());
+
+  // 加载资源
+  Json j;
+  j.load("config/assets.json");
+  auto image_list = j.get<std::vector<std::string>>("/image");
+  if (image_list.has_value())
+    for (auto&& img : image_list.value()) res.getTexture(img);
   current_scene.reset(new SInit(&res));
 }
 void Game::run() {
@@ -25,7 +34,6 @@ void Game::run() {
       static_cast<float>(SDL_GetPerformanceFrequency()) / 1000;
   uint64_t current_tick;
   SDL_Event event;
-  // load();
   last_tick = SDL_GetPerformanceCounter();
   bool running = true;
   while (running) {

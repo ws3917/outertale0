@@ -4,9 +4,9 @@
 #include <string>
 
 #include "object.hpp"
+#include <yyjson.h>
 
 
-class yyjson_doc;
 class Json : public Object {
  public:
   bool load(const std::string& filepath) override;

@@ -6,6 +6,7 @@ class Texture : public Object {
   Texture(SDL_Renderer* renderer) : renderer(renderer) {}
   bool load(const std::string& filepath) override;
   void reset() override;
+  void draw();
 
  private:
   struct SDL_TextureDeleter {

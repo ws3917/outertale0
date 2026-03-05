@@ -2,9 +2,9 @@
 #include <SDL3/SDL.h>
 
 #include "../type/object.hpp"
+#include "../res.hpp"
 
 // 这是一个纯虚基类（接口）
-class Res;
 class Scene {
  public:
   Scene(Res* res) : res{res} {}

@@ -3,6 +3,8 @@
 #include <SDL3/SDL_log.h>
 #include <yyjson.h>
 
+#include <vector>
+
 void Json::yyjson_docDeleter::operator()(yyjson_doc* doc) const {
   if (doc) yyjson_doc_free(doc);
 }
@@ -18,7 +20,7 @@ bool Json::load(const std::string& filepath) {
   yyjson_doc* new_doc = yyjson_read_opts(reinterpret_cast<char*>(data.data()),
                                          data.size(), 0, nullptr, &err);
 
-  if (!doc) {
+  if (!new_doc) {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%s", err.msg);
     return false;
   }
@@ -43,6 +45,17 @@ std::optional<T> Json::get(const std::string& key) {
     return std::string(yyjson_get_str(val));
   } else if constexpr (std::is_same_v<T, bool>) {
     return yyjson_get_bool(val);
+  } else if constexpr (std::is_same_v<T, std::vector<std::string>>) {
+    if (!yyjson_is_arr(val)) return std::nullopt;
+    yyjson_val* item;
+    yyjson_arr_iter iter;
+    yyjson_arr_iter_init(val, &iter);
+    std::vector<std::string> result;
+    while ((item = yyjson_arr_iter_next(&iter))) {
+      const char* str = yyjson_get_str(item);
+      result.push_back(std::string(str));
+    }
+    return result;
   }
   return std::nullopt;
 }
@@ -53,3 +66,5 @@ template std::optional<float> Json::get<float>(const std::string& key);
 template std::optional<std::string> Json::get<std::string>(
     const std::string& key);
 template std::optional<bool> Json::get<bool>(const std::string& key);
+template std::optional<std::vector<std::string>>
+Json::get<std::vector<std::string>>(const std::string& key);

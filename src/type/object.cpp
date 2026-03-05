@@ -34,7 +34,7 @@ bool Object::load(const std::string& filepath) {
   }
   PHYSFS_close(file);
   data = std::move(buffer);
-  io.reset(SDL_IOFromMem(buffer.data(), size));
+  io.reset(SDL_IOFromMem(data.data(), size));
   if (!io) {
     data.clear();
     return false;

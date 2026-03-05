@@ -4,9 +4,13 @@
 #include "type/font.hpp"
 #include "type/texture.hpp"
 
-Res::Res(SDL_Renderer* renderer, MIX_Mixer* mixer)
-    : renderer(renderer), mixer(mixer) {}
+Res::Res() = default;
 Res::~Res() = default;
+void Res::init(SDL_Renderer* new_renderer, MIX_Mixer* new_mixer)
+{
+  renderer = new_renderer;
+  mixer = new_mixer;
+}
 Audio& Res::getSound(const std::string& id) {
   auto result = sound_list.find(id);
   if (result != sound_list.end()) return *result->second;
