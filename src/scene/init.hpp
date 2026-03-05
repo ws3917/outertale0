@@ -6,6 +6,7 @@ class SInit : public Scene {
   void update(float dt) override;
   void input(const SDL_Event& event) override;
   void draw() override;
-
+  void enter() override {}
+  void exit() override {}
  private:
 };

@@ -54,3 +54,9 @@ void Game::AssetDeleter::operator()(SDL_Renderer* renderer) const {
 void Game::AssetDeleter::operator()(MIX_Mixer* mixer) const {
   if (mixer) MIX_DestroyMixer(mixer);
 }
+void Game::changeScene(std::unique_ptr<Scene> new_scene) {
+  if (!new_scene) return;
+  if (current_scene) current_scene->exit();
+  current_scene = std::move(new_scene);
+  current_scene->enter();
+}

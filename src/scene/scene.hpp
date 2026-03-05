@@ -12,6 +12,8 @@ class Scene {
   virtual void input(const SDL_Event& event) = 0;
   virtual void update(float dt) = 0;
   virtual void draw() = 0;
+  virtual void enter() = 0;
+  virtual void exit() = 0;
 
  protected:
   std::vector<Object> objects;
