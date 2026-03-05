@@ -12,6 +12,14 @@ void Font::reset() {
   glyphs.clear();
   metadata = {};
 }
+const Font::Glyph* Font::getGlyph(int codepoint) const {
+  auto it = glyphs.find(codepoint);
+  if (it == glyphs.end()) return nullptr;
+  return &it->second;
+}
+SDL_Renderer* Font::getRenderer() const { return renderer; }
+const Texture& Font::getTexture() const { return texture; }
+int Font::getLineHeight() const { return metadata.line_height; }
 bool Font::load(const std::string& filepath) {
   if (loaded) reset();
   if (!Object::load(filepath)) return false;

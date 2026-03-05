@@ -5,11 +5,6 @@
 
 class Font : public Object {
  public:
-  Font(SDL_Renderer* renderer) : texture(renderer), renderer(renderer) {}
-  bool load(const std::string& filepath) override;
-  void reset() override;
-
- private:
   struct Glyph {
     uint16_t x, y, w, h;
     int16_t x_offset, y_offset, x_advance;
@@ -19,6 +14,15 @@ class Font : public Object {
     uint16_t base;
     std::string page_filename;
   };
+  Font(SDL_Renderer* renderer) : texture(renderer), renderer(renderer) {}
+  bool load(const std::string& filepath) override;
+  const Texture& getTexture() const;
+  const Glyph* getGlyph(int codepoint) const;
+  int getLineHeight() const;
+  SDL_Renderer* getRenderer() const;
+  void reset() override;
+
+ private:
   template <typename T>
   T read(const uint8_t*& ptr) {
     T value;

@@ -6,6 +6,7 @@ class Text {
  public:
   Text(Font* font, const std::string& content = "");
   void draw(float x, float y);
+  void setContent(const std::string& str);
 
  private:
   Font* font;

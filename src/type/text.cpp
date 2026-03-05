@@ -4,10 +4,14 @@
 
 #include "font.hpp"
 
-
 Text::Text(Font* font, const std::string& content)
     : font(font), content(content) {}
 
+void draw(float x, float y)
+{
+  // todo
+}
+void Text::setContent(const std::string& str) { content = str; }
 SDL_Color Text::getColor(char c) {
   // 红橙黄绿青蓝紫黑白
   switch (c) {
