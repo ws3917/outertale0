@@ -6,7 +6,7 @@ set_languages("cxx20")
 add_rules("mode.debug", "mode.release")
 add_requireconfs("*", {configs = {shared = true}})
 
-add_requires("physfs", "nlohmann_json", "libcurl", "libsdl3 3.4.0")
+add_requires("physfs", "yyjson", "libcurl", "libsdl3 3.4.0")
 add_repositories("myrepo local-repo")
 add_requires("libsdl3_mixer 3.1.2")
 
@@ -29,7 +29,7 @@ target("spacetime0")
     end
 
     -- 3. 链接依赖
-    add_packages("physfs", "nlohmann_json", "libsdl3", "libsdl3_mixer")
+    add_packages("physfs", "yyjson", "libsdl3", "libsdl3_mixer")
     add_deps("gjapi")
 
     -- windows 设置
