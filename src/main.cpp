@@ -4,14 +4,13 @@
 #include "game.hpp"
 #include "gamecontext.hpp"
 
-
 int main(int, char** argv) {
   try {
     GameContext context;
     Game game;
     game.run();
   } catch (std::exception& e) {
-    SDL_Log("%s", e.what());
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "%s", e.what());
     return 1;
   }
   return 0;

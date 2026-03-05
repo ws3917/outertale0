@@ -30,7 +30,7 @@ bool Font::load(const std::string& filepath) {
     uint32_t block_size = read<uint32_t>(file);
     const uint8_t* next_block = file + block_size;
     if (next_block > end) {
-      SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Block overflow");
+      SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Block overflow");
       break;
     }
     switch (block_type) {

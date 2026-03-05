@@ -12,15 +12,13 @@ bool Audio::load(const std::string& filepath) {
   SDL_SeekIO(io.get(), 0, SDL_IO_SEEK_SET);
   audio.reset(MIX_LoadAudio_IO(mixer, io.get(), true, false));
   if (!audio) {
-    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio: %s",
-                 SDL_GetError());
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Failed to load audio: %s", SDL_GetError());
     return false;
   }
   loaded = true;
   return true;
 }
-void Audio::play()
-{
-    if (!loaded || !audio) return;
-    MIX_PlayAudio(mixer, audio.get());
+void Audio::play() {
+  if (!loaded || !audio) return;
+  MIX_PlayAudio(mixer, audio.get());
 }

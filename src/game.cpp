@@ -2,9 +2,11 @@
 
 #include <SDL3_mixer/SDL_mixer.h>
 
+#include "scene/init.hpp"
 #include "values.hpp"
 
-Game::Game() {
+Game::~Game() = default;
+Game::Game() : res(renderer.get(), mixer.get()) {
   window.reset(SDL_CreateWindow(
       V::GAME_NAME, static_cast<int>(V::WINDOW_SCALE * V::RENDER_WIDTH),
       static_cast<int>(V::WINDOW_SCALE * V::RENDER_HEIGHT),
@@ -16,6 +18,7 @@ Game::Game() {
                                    V::RENDER_HEIGHT,
                                    SDL_LOGICAL_PRESENTATION_LETTERBOX);
   mixer.reset(MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, 0));
+  current_scene.reset(new SInit(&res));
 }
 void Game::run() {
   const float TICK_FREQ =
@@ -29,15 +32,15 @@ void Game::run() {
     while (SDL_PollEvent(&event)) {
       if (event.type == SDL_EVENT_QUIT) running = false;
       SDL_ConvertEventToRenderCoordinates(renderer.get(), &event);
-      // input(event)
+      current_scene->input(event);
     }
     current_tick = SDL_GetPerformanceCounter();
     float dt = (current_tick - last_tick) / TICK_FREQ;
     last_tick = current_tick;
-    // update(delta)
+    current_scene->update(dt);
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 255);
     SDL_RenderClear(renderer.get());
-    // draw(renderer)
+    current_scene->draw();
     SDL_RenderPresent(renderer.get());
   }
 }

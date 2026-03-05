@@ -3,8 +3,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <SDL3/SDL_iostream.h>
 
-class SDL_IOStream;
 
 class Object {
  private:

@@ -1,7 +1,6 @@
 #pragma once
 #include "object.hpp"
-class SDL_Renderer;
-class SDL_Texture;
+#include <SDL3/SDL.h>
 class Texture : public Object {
  public:
   Texture(SDL_Renderer* renderer) : renderer(renderer) {}

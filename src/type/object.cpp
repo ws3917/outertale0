@@ -23,7 +23,7 @@ bool Object::load(const std::string& filepath) {
   try {
     buffer.resize(size);
   } catch (const std::bad_alloc& e) {
-    SDL_Log("Memory allocation failed: %s", e.what());
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Memory allocation failed: %s", e.what());
     PHYSFS_close(file);
     return false;
   }

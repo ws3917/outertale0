@@ -1,7 +1,6 @@
 #pragma once
 #include "object.hpp"
-class MIX_Mixer;
-class MIX_Audio;
+#include <SDL3_mixer/SDL_mixer.h>
 class Audio : public Object {
  public:
   Audio(MIX_Mixer* mixer) : mixer(mixer) {}
