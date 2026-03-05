@@ -22,6 +22,7 @@ void Game::run() {
       static_cast<float>(SDL_GetPerformanceFrequency()) / 1000;
   uint64_t current_tick;
   SDL_Event event;
+  // load();
   last_tick = SDL_GetPerformanceCounter();
   bool running = true;
   while (running) {
