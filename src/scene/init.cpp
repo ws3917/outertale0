@@ -30,7 +30,7 @@ void SInit::update(float dt) {
       break;
     }
     case PanelState::Showing:
-      if (state_timer >= 5.0f) {
+      if (state_timer >= 4.5f) {
         state_timer = 0.0;
         state = PanelState::FadeOut;
       }
