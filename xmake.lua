@@ -6,7 +6,7 @@ set_languages("cxx20")
 add_rules("mode.debug", "mode.release")
 add_requireconfs("*", {configs = {shared = true}})
 
-add_requires("physfs", "yyjson", "libcurl", "libsdl3 3.4.0")
+add_requires("physfs", "yyjson", "libcurl", "libsdl3 3.4.2")
 add_repositories("myrepo local-repo")
 add_requires("libsdl3_mixer 3.1.2")
 
